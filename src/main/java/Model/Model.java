@@ -1,23 +1,14 @@
 package Model;
 
 import Controller.LinkController;
-import Firestore.Data;
-import View.Homepage;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.ExecutionException;
+import View.MainFrame;
+import View.MainFrame2;
 
 public class Model {
     public static void main(String[] args) {
-        LinkController.initializeList();
 
-        Homepage homepage = new Homepage();
-        homepage.setVisible(true);
-
-
-
+//        LinkController.initializeList();
+        MainFrame2 mainFrame2 = new MainFrame2();
 
     }
 }

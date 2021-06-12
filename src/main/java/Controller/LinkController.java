@@ -1,8 +1,9 @@
 package Controller;
 
+import Firestore.Auth;
 import Firestore.Data;
 import Model.Link;
-import View.Homepage;
+import Model.User;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -22,7 +23,12 @@ public class LinkController {
         }
         linkList = linkData.getData();
 
-        Homepage.setJList(linkList);
+//        Homepage.setJList(linkList);
     }
 
+    public static Boolean isAuth(User user) {
+
+        return Auth.isAuth(user.getId(), user.getPw());
+
+    }
 }

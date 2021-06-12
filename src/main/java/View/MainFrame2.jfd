@@ -1,0 +1,13 @@
+JFDML JFormDesigner: "7.0.4.0.360" Java: "11.0.10" encoding: "UTF-8"
+
+new FormModel {
+	contentType: "form/swing"
+	root: new FormRoot {
+		add( new FormWindow( "javax.swing.JFrame", new FormLayoutManager( class javax.swing.BoxLayout ) ) {
+			name: "this"
+		}, new FormLayoutConstraints( null ) {
+			"location": new java.awt.Point( 290, 135 )
+			"size": new java.awt.Dimension( 400, 300 )
+		} )
+	}
+}
