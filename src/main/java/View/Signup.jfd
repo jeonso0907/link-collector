@@ -1,0 +1,40 @@
+JFDML JFormDesigner: "7.0.4.0.360" Java: "11.0.10" encoding: "UTF-8"
+
+new FormModel {
+	contentType: "form/swing"
+	root: new FormRoot {
+		add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class org.jdesktop.layout.GroupLayout ) {
+			"$horizontalGroup": "par l {seq {space :p:71:p, par l {comp label1:::p:51:p, comp pwLabel:::::x}, space ::42:x, par l {par l:l {comp textField1:::::x, comp pwText::l:p:135:p}, seq {par l {comp backBtn::l:p::p, comp submitBtn::l:p::p}, space :p:57:p}}, space :p:101:p}}"
+			"$verticalGroup": "par l {seq {space :p:76:p, par l {comp label1::::35:x, comp textField1::::35:x}, space s:::p, par l {comp pwLabel::::36:x, comp pwText::::36:x}, space :p:12:p, comp submitBtn:::p::p, space u:::p, comp backBtn:::p::p, space :p:51:p}}"
+		} ) {
+			name: "this"
+			add( new FormComponent( "javax.swing.JTextField" ) {
+				name: "textField1"
+			} )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "label1"
+				"text": "Email"
+			} )
+			add( new FormComponent( "javax.swing.JTextField" ) {
+				name: "pwText"
+			} )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "pwLabel"
+				"text": "PW"
+			} )
+			add( new FormComponent( "javax.swing.JButton" ) {
+				name: "backBtn"
+				"text": "Back"
+				addEvent( new FormEvent( "java.awt.event.MouseListener", "mouseClicked", "backBtnMouseClicked", true ) )
+			} )
+			add( new FormComponent( "javax.swing.JButton" ) {
+				name: "submitBtn"
+				"text": "Submit"
+				addEvent( new FormEvent( "java.awt.event.MouseListener", "mouseClicked", "submitBtnMouseClicked", true ) )
+			} )
+		}, new FormLayoutConstraints( null ) {
+			"location": new java.awt.Point( 240, 80 )
+			"size": new java.awt.Dimension( 400, 300 )
+		} )
+	}
+}

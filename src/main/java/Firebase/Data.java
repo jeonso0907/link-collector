@@ -1,4 +1,4 @@
-package Firestore;
+package Firebase;
 
 import Model.Link;
 import com.google.api.core.ApiFuture;
@@ -17,15 +17,8 @@ public class Data {
 
     private Firestore db;
 
-    public Data() throws IOException {
-        GoogleCredentials credentials = GoogleCredentials.getApplicationDefault();
-        FirebaseOptions options = new FirebaseOptions.Builder()
-                .setCredentials(credentials)
-                .setProjectId("link-collector-41e61")
-                .build();
-        FirebaseApp.initializeApp(options);
-
-        db = FirestoreClient.getFirestore();
+    public Data(Firestore fireStore) throws IOException {
+        db = fireStore;
     }
 
     public List<Link> getData() {
@@ -43,13 +36,19 @@ public class Data {
         }
 
         for (DocumentSnapshot document : documents) {
-            System.out.println("Getting Link: " + document.getId());
-            Link link = new Link(document.getString("Link"), document.getString("Title"));
-            System.out.println(link.getLink() + " " + link.getTitle());
-            linkList.add(link);
+            if (document.getId().substring(0,4).equals("Link")) {
+                System.out.println("Getting Link: " + document.getId());
+                Link link = new Link(document.getString("Link"), document.getString("Title"));
+                System.out.println(link.getLink() + " " + link.getTitle());
+                linkList.add(link);
+            }
         }
 
         return linkList;
+    }
+
+    public void checkDuplicate(String id, String pw) {
+
     }
 
     public void setData() throws IOException, ExecutionException, InterruptedException {

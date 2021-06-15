@@ -21,4 +21,9 @@ public class MainFrame extends JFrame {
         this.setVisible(true);
     }
 
+    public void changePanel(JPanel panel) {
+        this.add(panel);
+        this.setVisible(true);
+    }
+
 }

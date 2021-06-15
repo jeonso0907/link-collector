@@ -9,6 +9,8 @@ import javax.swing.*;
 import javax.swing.GroupLayout;
 import com.jgoodies.forms.layout.*;
 
+import static Controller.LinkController.getMainFrame;
+
 /**
  * @author unknown
  */
@@ -37,4 +39,12 @@ public class MainFrame2 extends JFrame {
     // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables
     // Generated using JFormDesigner Evaluation license - unknown
     // JFormDesigner - End of variables declaration  //GEN-END:variables
+
+    public void setPanel(JPanel panel) {
+        var contentPane = getContentPane();
+        contentPane.removeAll();
+        contentPane.add(panel);
+        validate();
+        setVisible(true);
+    }
 }

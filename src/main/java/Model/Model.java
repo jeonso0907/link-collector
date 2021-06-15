@@ -1,14 +1,23 @@
 package Model;
 
 import Controller.LinkController;
-import View.MainFrame;
+import Firebase.Auth;
+import Firebase.Data;
+import Firebase.Firebase;
 import View.MainFrame2;
 
-public class Model {
-    public static void main(String[] args) {
+import java.io.IOException;
 
-//        LinkController.initializeList();
-        MainFrame2 mainFrame2 = new MainFrame2();
+public class Model {
+
+    public static void main(String[] args) throws IOException {
+
+        LinkController.initializeList();
+        LinkController.initializeFirebase();
+        LinkController.initializeMainFrame();
+
 
     }
+
+
 }
