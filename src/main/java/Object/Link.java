@@ -1,4 +1,4 @@
-package Model;
+package Object;
 
 public class Link {
     private String title;

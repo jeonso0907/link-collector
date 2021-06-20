@@ -1,11 +1,7 @@
 package Controller;
 
-import Firebase.Auth;
-import Firebase.Data;
 import Firebase.Firebase;
-import Model.Link;
-import Model.User;
-import View.MainFrame2;
+import Object.Link;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -15,7 +11,7 @@ public class LinkController {
 
     private static List<Link> linkList = new ArrayList<Link>();
     private static Firebase fireBase;
-    private static MainFrame2 mainFrame;
+
 
     public static void initializeList() {
 
@@ -44,11 +40,4 @@ public class LinkController {
         return fireBase;
     }
 
-    public static void initializeMainFrame() {
-        mainFrame = new MainFrame2();
-    }
-
-    public static MainFrame2 getMainFrame() {
-        return mainFrame;
-    }
 }
