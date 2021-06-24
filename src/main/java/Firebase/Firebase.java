@@ -47,7 +47,6 @@ public class Firebase {
 
     public void getData() throws IOException {
         Data data = new Data(this.db);
-        data.getData();
     }
 
 }

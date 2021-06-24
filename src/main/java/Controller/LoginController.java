@@ -2,22 +2,13 @@ package Controller;
 
 import Object.User;
 import Firebase.Auth;
-import Model.Model;
-import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
-import javafx.stage.Stage;
-
-import java.io.IOException;
 
 public class LoginController {
-
 
     @FXML
     private TextField emailText;
@@ -33,8 +24,12 @@ public class LoginController {
             @Override
             public void handle(MouseEvent mouseEvent) {
                 User user = new User(emailText.getText(), pwText.getText());
-                Auth.isUser(user);
-                System.out.println("로그인 성공");
+                if (Auth.isUser(user)) {
+                    LinkListController.setLoginUser(user);
+                    new ScreenController("View/LinkList.fxml");
+                } else {
+                    ScreenController.getLoginDialog();
+                }
             }
         });
 
@@ -44,6 +39,10 @@ public class LoginController {
                 new ScreenController("View/Signup.fxml");
             }
         });
+    }
+
+    private void loginErrorStatus() {
+
     }
 
 }

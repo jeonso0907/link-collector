@@ -1,8 +1,12 @@
 package Firebase;
 
+import Controller.LinkListController;
+import Object.User;
 import Object.Link;
 import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.*;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 import java.io.IOException;
 import java.util.*;
@@ -12,14 +16,17 @@ public class Data {
 
     private Firestore db;
 
+    public Data() {};
+
     public Data(Firestore fireStore) throws IOException {
         db = fireStore;
     }
 
-    public List<Link> getData() {
-        List<Link> linkList = new ArrayList<>();
+    public ObservableList<Link> getData(User user) {
+        db = Firebase.getDb();
+        ObservableList<Link> linkList = FXCollections.observableArrayList();
 
-        ApiFuture<QuerySnapshot> userLinkCollection = db.collection("jeon.193").get();
+        ApiFuture<QuerySnapshot> userLinkCollection = db.collection("link").get();
 
         List<QueryDocumentSnapshot> documents = null;
         try {
@@ -31,11 +38,15 @@ public class Data {
         }
 
         for (DocumentSnapshot document : documents) {
-            if (document.getId().substring(0,4).equals("Link")) {
+            if (document.getId().equals(user.getId())) {
                 System.out.println("Getting Link: " + document.getId());
-                Link link = new Link(document.getString("Link"), document.getString("Title"));
-                System.out.println(link.getLink() + " " + link.getTitle());
-                linkList.add(link);
+                for (Map.Entry<String, Object> linkData : document.getData().entrySet()) {
+                    Link link = new Link(linkData.getKey(), linkData.getValue().toString());
+                    linkList.add(link);
+                }
+//                Link link = new Link(document.getData(user.getId()), document.get(document.getId()).toString());
+//                System.out.println(link.getLink() + " " + link.getTitle());
+//                linkList.add(link);
             }
         }
 
@@ -46,15 +57,15 @@ public class Data {
 
     }
 
-    public void setData() throws IOException, ExecutionException, InterruptedException {
-        DocumentReference docRef = db.collection("users").document("alovelace");
+    public void setData(Link link) throws ExecutionException, InterruptedException {
+        User user = LinkListController.getLoginUser();
+        db = Firebase.getDb();
+        DocumentReference docRef = db.collection("link").document(user.getId());
         // Add document data  with id "alovelace" using a hashmap
         Map<String, Object> data = new HashMap<>();
-        data.put("first", "Ada");
-        data.put("last", "Lovelace");
-        data.put("born", 1815);
+        data.put(link.getLink(), link.getTitle());
         //asynchronously write data
-        ApiFuture<WriteResult> result = docRef.set(data);
+        ApiFuture<WriteResult> result = docRef.update(data);
         // ...
         // result.get() blocks on response
         System.out.println("Update time : " + result.get().getUpdateTime());

@@ -48,4 +48,12 @@ public class Auth {
         return true;
     }
 
+    public static void initializeLinkData(User user) {
+
+        Firestore db = Firebase.getDb();
+
+        db.collection("link").document(user.getId()).set(new HashMap<>());
+
+    }
+
 }

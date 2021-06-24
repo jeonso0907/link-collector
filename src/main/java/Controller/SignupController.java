@@ -83,7 +83,9 @@ public class SignupController {
         if (isCurrent) {
             signupResult.put(false, "Already signed up");
         } else {
-            Auth.signupNewUser(user);
+            if(Auth.signupNewUser(user)) {
+                Auth.initializeLinkData(user);
+            }
             signupResult.put(true, "Signup success!");
         }
 
