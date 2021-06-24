@@ -1,4 +1,6 @@
-package Model;
+package Object;
+
+import javafx.collections.ObservableList;
 
 public class Link {
     private String title;
