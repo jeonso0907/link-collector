@@ -7,26 +7,38 @@ import javafx.collections.ObservableList;
 public class CurrUser {
 
     private User currUser;
-    private ObservableList<Link> userLink;
+    private static ObservableList<Link> userLink;
+
+    private static CurrUser currUserObj = null;
 
     public CurrUser(User user, ObservableList<Link> userLink) {
         this.currUser = user;
         this.userLink = userLink;
     }
 
-    public User getCurrUser() {
-        return currUser;
+    public static CurrUser CurrUserObject (User user, ObservableList<Link> userLink) {
+        if (currUserObj == null) {
+            currUserObj = new CurrUser(user, userLink);
+        } else {
+            currUserObj.currUser = user;
+            currUserObj.userLink = userLink;
+        }
+        return currUserObj;
+    }
+
+    public static User getCurrUser() {
+        return currUserObj.currUser;
     }
 
     public void setCurrUser(User currUser) {
         this.currUser = currUser;
     }
 
-    public ObservableList<Link> getUserLink() {
-        return userLink;
+    public static ObservableList<Link> getUserLink() {
+        return currUserObj.userLink;
     }
 
-    public void setUserLink(ObservableList<Link> userLink) {
-        this.userLink = userLink;
+    public static void setUserLink(ObservableList<Link> userLink) {
+        currUserObj.userLink = userLink;
     }
 }

@@ -6,9 +6,9 @@ public class Link {
     private String title;
     private String link;
 
-    public Link(String link, String title) {
-        this.link = link;
+    public Link(String title, String link) {
         this.title = title;
+        this.link = link;
     }
 
     public String getTitle() {

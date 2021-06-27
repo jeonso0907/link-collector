@@ -7,7 +7,6 @@ import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanBinding;
 import javafx.collections.ObservableList;
-import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
@@ -15,17 +14,19 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
+import javafx.scene.transform.Scale;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 
 import java.io.IOException;
-import java.security.Key;
 import java.util.HashMap;
 import java.util.Optional;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class ScreenController {
+
+    private static Link editLink;
 
     public ScreenController(String nextScene) {
         Parent root= null;
@@ -73,16 +74,8 @@ public class ScreenController {
     public static Link getEditDialog(String dialogType, ListView linkList) {
         // Create the custom dialog
         Dialog<Pair<String,String>> dialog = new Dialog<>();
-        dialog.setTitle("Link Edit");
-        dialog.setHeaderText("Link Edit");
-
-        dialog.setOnCloseRequest(new EventHandler<DialogEvent>() {
-            @Override
-            public void handle(DialogEvent dialogEvent) {
-                linkList.refresh();
-                new ScreenController("View/ListEdit.fxml");
-            }
-        });
+        dialog.setTitle("Edit Link");
+        dialog.setHeaderText("Edit Link");
 
         // Set the dialog icon (TODO)
         // dialog.setGraphic(new ImageView(this.getClass(0.getResource("").toString()));
@@ -101,8 +94,14 @@ public class ScreenController {
 
         TextField titleText = new TextField();
         titleText.setPromptText("Link Title");
+
         TextField linkText = new TextField();
         linkText.setPromptText("Link");
+
+        if (dialogType.equals("Edit")) {
+            titleText.setText(editLink.getTitle());
+            linkText.setText(editLink.getLink());
+        }
 
         grid.add(new Label("Link Title: "), 0, 0);
         grid.add(titleText, 1, 0);
@@ -145,8 +144,9 @@ public class ScreenController {
 
         Optional<Pair<String, String>> result = dialog.showAndWait();
         Link link = new Link(titleText.getText(), linkText.getText());
-        result.ifPresent(titleLink -> {
-
+        AtomicBoolean isOk = new AtomicBoolean(false);
+        result.ifPresent(button -> {
+            isOk.set(true);
             if (dialogType.equals("Add")) {
                 // Firebase add
                 try {
@@ -162,12 +162,67 @@ public class ScreenController {
                 ObservableList<Link> linkEditList = ListEditController.getEditList();
                 linkEditList.add(link);
                 ListEditController.setEditList(linkEditList);
-            } else {
+            } else if (dialogType.equals("Edit")) {
                 // Firebase edit
+                Data data = new Data();
+                boolean isEdited = false;
+                try {
+                    isEdited = data.updateData(editLink, link);
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                if (isEdited) {
 
+                }
             }
+            System.out.println(button.getKey().toString());
         });
+        if (!isOk.get()) {
+            link.setTitle("Cancel");
+        }
         return link;
+    }
+
+    public static boolean getDeleteDialog(Link selectedLink) {
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setTitle("Delete Link");
+        alert.setHeaderText("Do you really want to delete this link?");
+        alert.setContentText("          Title:               " + selectedLink.getTitle() +
+                             "\n          Link:               " + selectedLink.getLink());
+
+        boolean isDeleted = false;
+
+        alert.getDialogPane().getButtonTypes().clear();
+
+        ButtonType deleteBtn = new ButtonType("Delete", ButtonBar.ButtonData.OK_DONE);
+        ButtonType cancelBtn = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
+
+        alert.getDialogPane().getButtonTypes().add(deleteBtn);
+        alert.getDialogPane().getButtonTypes().add(cancelBtn);
+
+        Optional<ButtonType> result = alert.showAndWait();
+
+        if (result.get().getText().equals("Delete")) {
+            Data data = new Data();
+            data.removeData(selectedLink);
+            isDeleted = true;
+        }
+        return isDeleted;
+    }
+
+    public static void setEditingLink(Link link) {
+        editLink = link;
+    }
+
+    public static void getRunFailAlert(Link link) {
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setTitle("Launch Failed");
+        alert.setHeaderText("Launch Failed");
+        alert.setContentText("Failed to launch the link: \n" +
+                            link.getLink());
+        alert.showAndWait();
     }
 
 }

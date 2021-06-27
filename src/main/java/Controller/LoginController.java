@@ -5,6 +5,8 @@ import Firebase.Auth;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.ProgressBar;
+import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 
@@ -18,13 +20,20 @@ public class LoginController {
     private Button loginBtn;
     @FXML
     private Button signupBtn;
+    @FXML
+    private ProgressIndicator pb;
 
     public void initialize() {
+
+        pb.setVisible(false);
+
         loginBtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
                 User user = new User(emailText.getText(), pwText.getText());
                 if (Auth.isUser(user)) {
+                    pb.setVisible(true);
+
                     LinkListController.setLoginUser(user);
                     new ScreenController("View/LinkList.fxml");
                 } else {
