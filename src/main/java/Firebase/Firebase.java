@@ -18,7 +18,7 @@ public class Firebase {
 
 
         FileInputStream serviceAccount =
-                new FileInputStream("/Users/sooyoung/Desktop/link-collector-41e61-firebase-adminsdk-ilih0-6179a8c8ef.json");
+                new FileInputStream("src/main/resources/FirestoreKey/firestore.json");
 
         FirebaseOptions options = new FirebaseOptions.Builder()
                 .setCredentials(GoogleCredentials.fromStream(serviceAccount))
