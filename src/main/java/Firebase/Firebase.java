@@ -9,6 +9,7 @@ import com.google.firebase.cloud.FirestoreClient;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 
 public class Firebase {
 
@@ -18,11 +19,18 @@ public class Firebase {
 
 
         FileInputStream serviceAccount =
-                new FileInputStream("src/main/link-collector-41e61-firebase-adminsdk-ilih0-6179a8c8ef.json");
+                new FileInputStream("src/main/resources/firestore-key.json");
+
+//        FileInputStream is = new FileInputStream("~/firestore-key.json");
+
+        InputStream in = this.getClass().getResourceAsStream("/firestore-key.json");
+
+        InputStream in1 = this.getClass().getClassLoader().getResourceAsStream("firestore-key.json");
 
         FirebaseOptions options = new FirebaseOptions.Builder()
-                .setCredentials(GoogleCredentials.fromStream(serviceAccount))
+                .setCredentials(GoogleCredentials.fromStream(in1))
                 .build();
+
 
         FirebaseApp.initializeApp(options);
 

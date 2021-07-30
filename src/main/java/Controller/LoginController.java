@@ -20,20 +20,14 @@ public class LoginController {
     private Button loginBtn;
     @FXML
     private Button signupBtn;
-    @FXML
-    private ProgressIndicator pb;
 
     public void initialize() {
-
-        pb.setVisible(false);
 
         loginBtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
                 User user = new User(emailText.getText(), pwText.getText());
                 if (Auth.isUser(user)) {
-                    pb.setVisible(true);
-
                     LinkListController.setLoginUser(user);
                     new ScreenController("View/LinkList.fxml");
                 } else {

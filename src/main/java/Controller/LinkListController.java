@@ -76,9 +76,6 @@ public class LinkListController {
 
                 boolean isRun = openWebpage(url);
                 System.out.println(isRun);
-                if (!isRun) {
-                    ScreenController.getRunFailAlert(selectedLink);
-                }
 
             }
         });
